@@ -31,18 +31,18 @@ const checkboxLabels = ["song", "movie", "year", "musician", "lyricst",
 
 
 const useStyles = makeStyles(theme => ({
-    root: {
+  root: {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      marginTop: theme.spacing(5),
-      backgroundColor: "#fafafa",
+      marginTop: theme.spacing(17),
+      background: '#DEE4E7',
       padding: theme.spacing(3)
     },
     menu1:{
       position:"fixed",
       right:400,
-      top:100
+      top:100,
     },
     menu2:{
       position:"fixed",
@@ -51,9 +51,13 @@ const useStyles = makeStyles(theme => ({
     },
     backButton: {
       position: "absolute",
-      backgroundColor: "#32CD32",
+      backgroundColor: "#4681f4",
       top: theme.spacing(2),
-      left: theme.spacing(2)
+      left: theme.spacing(2),
+      color: "#fff",
+      "&:hover": {
+        backgroundColor: "#3e8e41"
+      }
     },
     formControl: {
       margin: theme.spacing(3)
@@ -65,7 +69,7 @@ const useStyles = makeStyles(theme => ({
     },
     searchBtn: {
       margin: theme.spacing(3, 0, 2),
-      backgroundColor: "#4caf50",
+      backgroundColor: "#4681f4",
       color: "#fff",
       "&:hover": {
         backgroundColor: "#3e8e41"
@@ -79,7 +83,7 @@ const useStyles = makeStyles(theme => ({
       marginTop: theme.spacing(3),
       width: "100%",
       "& th": {
-        backgroundColor: "#3f51b5",
+        backgroundColor: "#4681f4",
         color: "#fff"
       }
     },
@@ -106,7 +110,7 @@ const useStyles = makeStyles(theme => ({
         visibility: "visible"
       },
       info: {
-        backgroundColor: "#32CD32",
+        backgroundColor: "#4681f4",
         color: "#fff",
         padding: theme.spacing(2),
         textAlign: "center",

@@ -11,17 +11,17 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     minHeight: '100vh',
     color: theme.palette.text.primary,
-    background: '#FF0000'
+    backgroundColor: "#D1F5FF"
   },
   main: {
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(2),
   },
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(12),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
     margin: theme.spacing(4, 0, 2),
@@ -50,20 +50,20 @@ export default function HomePage() {
       <Container component="main" className={classes.main} maxWidth="sm">
         <Paper className={classes.paper}>
           <Typography variant="h4" className={classes.title}>
-            Welcome to Tamil Song Metaphor Search Engine!
+            Here is the tamil A.R.Rahman hit song collection...
           </Typography>
           <Typography variant="body1" className={classes.body}>
-                 SEARCH
+                 You can search for a A.R.Rahman song!
           </Typography>
           <Typography variant="body1" className={classes.body}>
-            Meaning TO Metaphor
+            You can find a best metaphor used in the song!
           </Typography>
           <Typography variant="body1" className={classes.body}>
-            Metaphor TO Meaning
+            You also get the meaning of the metaphor!
           </Typography>
           <Link to="/search">
             <Button variant="contained" color="primary">
-              Search
+              Search For a Song
             </Button>
           </Link>
         </Paper>
