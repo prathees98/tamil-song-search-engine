@@ -223,6 +223,15 @@ export default function SearchPage() {
     }
   };
 
+  //Used in Intervel Query Related Componets
+const handleTrueFalseChange = (event) => {
+  setIntervalQueryOrder(event.target.value);
+};
+
+const handleNumberChange = (event) => {
+  setIntervalQueryGap(event.target.value);
+};
+
   return (
     <div className={classes.root}>
       <Button
