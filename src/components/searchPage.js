@@ -23,100 +23,100 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import {paramProvider} from "./ParamProvider";
+import { paramProvider, query } from "./ParamProvider";
 
 
-const checkboxLabels = ["song", "movie", "year", "musician", "lyricst",
- "singers","metopher","meaning","sourceDomain","targetDomain"];
+const checkboxLabels = ["song_name", "album", "year", "composer", "lyricst",
+  "singers", "Metophor", "Meaning", "sourceDomain", "targetDomain"];
 
 
 const useStyles = makeStyles(theme => ({
   root: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      marginTop: theme.spacing(17),
-      background: '#DEE4E7',
-      padding: theme.spacing(3)
-    },
-    menu1:{
-      position:"fixed",
-      right:400,
-      top:100,
-    },
-    menu2:{
-      position:"fixed",
-      right:200,
-      top:100
-    },
-    backButton: {
-      position: "absolute",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    marginTop: theme.spacing(17),
+    background: '#DEE4E7',
+    padding: theme.spacing(3)
+  },
+  menu1: {
+    position: "fixed",
+    right: 400,
+    top: 100,
+  },
+  menu2: {
+    position: "fixed",
+    right: 200,
+    top: 100
+  },
+  backButton: {
+    position: "absolute",
+    backgroundColor: "#4681f4",
+    top: theme.spacing(2),
+    left: theme.spacing(2),
+    color: "#fff",
+    "&:hover": {
+      backgroundColor: "#3e8e41"
+    }
+  },
+  formControl: {
+    margin: theme.spacing(3)
+  },
+  radioGroup: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  searchBtn: {
+    margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#4681f4",
+    color: "#fff",
+    "&:hover": {
+      backgroundColor: "#3e8e41"
+    }
+  },
+  searchBox: {
+    width: "50%",
+    margin: theme.spacing(3, 0, 2)
+  },
+  table: {
+    marginTop: theme.spacing(3),
+    width: "100%",
+    "& th": {
       backgroundColor: "#4681f4",
-      top: theme.spacing(2),
-      left: theme.spacing(2),
-      color: "#fff",
-      "&:hover": {
-        backgroundColor: "#3e8e41"
-      }
-    },
-    formControl: {
-      margin: theme.spacing(3)
-    },
-    radioGroup: {
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "center"
-    },
-    searchBtn: {
-      margin: theme.spacing(3, 0, 2),
-      backgroundColor: "#4681f4",
-      color: "#fff",
-      "&:hover": {
-        backgroundColor: "#3e8e41"
-      }
-    },
-    searchBox: {
-      width: "50%",
-      margin: theme.spacing(3, 0, 2)
-    },
-    table: {
-      marginTop: theme.spacing(3),
-      width: "100%",
-      "& th": {
-        backgroundColor: "#4681f4",
-        color: "#fff"
-      }
-    },
-    pagination: {
-        marginTop: theme.spacing(3),
-        display: "flex",
-        justifyContent: "flex-end"
-      },
-      checkboxes: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        margin: theme.spacing(2, 0, 2)
-      },
-      warning: {
-        backgroundColor: "#ff9800",
-        color: "#fff",
-        padding: theme.spacing(2),
-        textAlign: "center",
-        marginTop: theme.spacing(2)
-      },
-      showWarning: {
-        visibility: "visible"
-      },
-      info: {
-        backgroundColor: "#4681f4",
-        color: "#fff",
-        padding: theme.spacing(2),
-        textAlign: "center",
-        marginTop: theme.spacing(2),
-      }
-  }));
+      color: "#fff"
+    }
+  },
+  pagination: {
+    marginTop: theme.spacing(3),
+    display: "flex",
+    justifyContent: "flex-end"
+  },
+  checkboxes: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    margin: theme.spacing(2, 0, 2)
+  },
+  warning: {
+    backgroundColor: "#ff9800",
+    color: "#fff",
+    padding: theme.spacing(2),
+    textAlign: "center",
+    marginTop: theme.spacing(2)
+  },
+  showWarning: {
+    visibility: "visible"
+  },
+  info: {
+    backgroundColor: "#4681f4",
+    color: "#fff",
+    padding: theme.spacing(2),
+    textAlign: "center",
+    marginTop: theme.spacing(2),
+  }
+}));
 
 
 export default function SearchPage() {
@@ -124,7 +124,7 @@ export default function SearchPage() {
   const [value, setValue] = useState("option1");
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
-  const [filteredResults,setFilteredResults]=useState([]);
+  const [filteredResults, setFilteredResults] = useState([]);
   const [page, setPage] = useState(0);
 
   //Used in display results
@@ -134,16 +134,19 @@ export default function SearchPage() {
   // Menu & checkBox - Query Type
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedQueryTypes, setSelectedQueryTypes] = useState([]);
-  const queryTypes = ['Match','Match Phrase' ,'Multi Match','Wild Card','Aggregation'];
+  const queryTypes = ['Match', 'Match Phrase', 'Multi Match', 'Wild Card', 'Aggregation'];
 
-   // Menu & checkBox - Fields
-   const [anchorE2, setAnchorE2] = useState(null);
-   const [selectedFields, setSelectedFields] = useState([]);
-   const fields = ['Metopher', 'Meaning'];
+  // Menu & checkBox - Fields
+  const [anchorE2, setAnchorE2] = useState(null);
+  const [selectedFields, setSelectedFields] = useState([]);
+  const fields = ['Metopher', 'Meaning'];
 
   //warnig and information
   const [showWarning, setShowWarning] = useState(false);
   const [showInfo, setShowinfo] = useState(true);
+
+  const [intervalQueryOrder, setIntervalQueryOrder] = useState(true);
+  const [intervalQueryGap, setIntervalQueryGap] = useState("1");
 
 
   const handleChange = event => {
@@ -151,12 +154,13 @@ export default function SearchPage() {
   };
 
   //Request and Response Handler
-  const handleSearch = async () => {    
+  const handleSearch = async () => {
     try {
-     // const response = await axios.get(`your-endpoint/${searchTerm}`);
-      const param=paramProvider("all");
-      const response = await axios.get(`http://localhost:9200/tamilsonglyrics/_search`,{param});
-      setResults(response.data.hits.hits.map(hit=>hit._source))
+      // const response = await axios.get(`your-endpoint/${searchTerm}`);
+      const param = paramProvider(searchTerm, selectedQueryTypes, selectedFields, intervalQueryOrder, intervalQueryGap);
+      console.log(param)
+      const response = await axios.post(`http://localhost:9200/search-engine-2/_search`, param);
+      setResults(response.data.hits.hits.map(hit => hit._source))
       console.log(results)
     } catch (error) {
       console.error(error);
@@ -169,14 +173,14 @@ export default function SearchPage() {
     if (results.length === 0) {
       setShowWarning(true);
       setShowinfo(false);
-    }else{
+    } else {
       setShowWarning(false);
       setShowinfo(false);
     }
   };
 
 
- //Used In Table Display
+  //Used In Table Display
   const handleCheckboxChange = (event, label) => {
     if (event.target.checked) {
       setCheckboxes([...checkboxes, label]);
@@ -184,40 +188,40 @@ export default function SearchPage() {
       setCheckboxes(checkboxes.filter(checkboxLabel => checkboxLabel !== label));
     }
   };
- 
- //Used in Menu and checkBoxes -Query
-const handleMenuQueryClick = (event) => {
-  setAnchorEl(event.currentTarget);
-};
 
-const handleMenuQueryClose = () => {
-  setAnchorEl(null);
-};
+  //Used in Menu and checkBoxes -Query
+  const handleMenuQueryClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-const handleMenuCheckboxQueryChange = (field) => (event) => {
-  if (event.target.checked) {
-    setSelectedQueryTypes([...selectedQueryTypes, field]);
-  } else {
-    setSelectedQueryTypes(selectedQueryTypes.filter((f) => f !== field));
-  }
-};
+  const handleMenuQueryClose = () => {
+    setAnchorEl(null);
+  };
 
- //Used in Menu and checkBoxes - For Field
- const handleMenuFieldClick = (event) => {
-  setAnchorE2(event.currentTarget);
-};
+  const handleMenuCheckboxQueryChange = (field) => (event) => {
+    if (event.target.checked) {
+      setSelectedQueryTypes([...selectedQueryTypes, field]);
+    } else {
+      setSelectedQueryTypes(selectedQueryTypes.filter((f) => f !== field));
+    }
+  };
 
-const handleMenuFieldClose = () => {
-  setAnchorE2(null);
-};
+  //Used in Menu and checkBoxes - For Field
+  const handleMenuFieldClick = (event) => {
+    setAnchorE2(event.currentTarget);
+  };
 
-const handleMenuFieldCheckboxChange = (field) => (event) => {
-  if (event.target.checked) {
-    setSelectedFields([...selectedFields, field]);
-  } else {
-    setSelectedFields(selectedFields.filter((f) => f !== field));
-  }
-};
+  const handleMenuFieldClose = () => {
+    setAnchorE2(null);
+  };
+
+  const handleMenuFieldCheckboxChange = (field) => (event) => {
+    if (event.target.checked) {
+      setSelectedFields([...selectedFields, field]);
+    } else {
+      setSelectedFields(selectedFields.filter((f) => f !== field));
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -232,82 +236,82 @@ const handleMenuFieldCheckboxChange = (field) => (event) => {
       </Button>
 
       <Typography variant="h5">தமிழ் பாடல் தேடல்</Typography>
-     
+
       <div > {/** Start of the checkbox Menu */}
-          {/**Query Type */}
-          <div className={classes.menu1}>
-            <Button
-              aria-controls="nested-menu"
-              aria-haspopup="true"
-              onClick={handleMenuQueryClick}
-              className={classes.button}
-            >
-              Select Query Type
-            </Button>
-            <Menu
-              id="nested-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleMenuQueryClose}
-            >
-              {queryTypes.map((field) => (
-                <MenuItem key={field}>
-                  <Checkbox
-                    checked={selectedQueryTypes.includes(field)}
-                    onChange={handleMenuCheckboxQueryChange(field)}
-                    value={field}
-                  />
-                  <ListItemText primary={field} />
-                </MenuItem>
-              ))}
-
-              <MenuItem>
-                <IconButton onClick={handleMenuQueryClose}>
-                  close
-                </IconButton>
+        {/**Query Type */}
+        <div className={classes.menu1}>
+          <Button
+            aria-controls="nested-menu"
+            aria-haspopup="true"
+            onClick={handleMenuQueryClick}
+            className={classes.button}
+          >
+            Select Query Type
+          </Button>
+          <Menu
+            id="nested-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleMenuQueryClose}
+          >
+            {queryTypes.map((field) => (
+              <MenuItem key={field}>
+                <Checkbox
+                  checked={selectedQueryTypes.includes(field)}
+                  onChange={handleMenuCheckboxQueryChange(field)}
+                  value={field}
+                />
+                <ListItemText primary={field} />
               </MenuItem>
-            </Menu>
-          </div>
+            ))}
 
-          {/**Field Type */}
+            <MenuItem>
+              <IconButton onClick={handleMenuQueryClose}>
+                close
+              </IconButton>
+            </MenuItem>
+          </Menu>
+        </div>
 
-          <div className={classes.menu2}>
-            <Button
-              aria-controls="nested-menu"
-              aria-haspopup="true"
-              onClick={handleMenuFieldClick}
-              className={classes.button}
-            >
-              Select Field
-            </Button>
-            <Menu
-              id="nested-menu"
-              anchorEl={anchorE2}
-              keepMounted
-              open={Boolean(anchorE2)}
-              onClose={handleMenuFieldClose}
-            >
-              {fields.map((field) => (
-                <MenuItem key={field}>
-                  <Checkbox
-                    checked={selectedFields.includes(field)}
-                    onChange={handleMenuFieldCheckboxChange(field)}
-                    value={field}
-                  />
-                  <ListItemText primary={field} />
-                </MenuItem>
-              ))}
+        {/**Field Type */}
 
-              <MenuItem>
-                <IconButton onClick={handleMenuFieldClose}>
-                  close
-                </IconButton>
+        <div className={classes.menu2}>
+          <Button
+            aria-controls="nested-menu"
+            aria-haspopup="true"
+            onClick={handleMenuFieldClick}
+            className={classes.button}
+          >
+            Select Field
+          </Button>
+          <Menu
+            id="nested-menu"
+            anchorEl={anchorE2}
+            keepMounted
+            open={Boolean(anchorE2)}
+            onClose={handleMenuFieldClose}
+          >
+            {fields.map((field) => (
+              <MenuItem key={field}>
+                <Checkbox
+                  checked={selectedFields.includes(field)}
+                  onChange={handleMenuFieldCheckboxChange(field)}
+                  value={field}
+                />
+                <ListItemText primary={field} />
               </MenuItem>
-            </Menu>
-          </div>
-    </div>{/** End of the checkbox Menu */}
-      
+            ))}
+
+            <MenuItem>
+              <IconButton onClick={handleMenuFieldClose}>
+                close
+              </IconButton>
+            </MenuItem>
+          </Menu>
+        </div>
+      </div>{/** End of the checkbox Menu */}
+
       <TextField
         label="Search"
         variant="outlined"
@@ -339,37 +343,37 @@ const handleMenuFieldCheckboxChange = (field) => (event) => {
 
 
       <Table className={classes.table}>
-      <TableHead>
-        <TableRow>
-          {checkboxes.map((name) => (
-            <TableCell key={name}>{name}</TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {results.map((result,index) => (
-          <TableRow key={index}>
+        <TableHead>
+          <TableRow>
             {checkboxes.map((name) => (
-              <TableCell key={name}>{result[name]}</TableCell>
+              <TableCell key={name}>{name}</TableCell>
             ))}
           </TableRow>
-        ))}
-      </TableBody>
-     </Table>
-  
+        </TableHead>
+        <TableBody>
+          {results.map((result, index) => (
+            <TableRow key={index}>
+              {checkboxes.map((name) => (
+                <TableCell key={name}>{result[name]}</TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
-    {!showInfo && showWarning && (
-      <Container className={classes.warning}>
-        No results found. Please try a different search.
-      </Container>
-    )}
- 
-    {showInfo && !showWarning && (
-      <Container className={classes.info}>
-      Search Songs
-    </Container>
-    )}
-  
-  </div> ) 
-  
+
+      {!showInfo && showWarning && (
+        <Container className={classes.warning}>
+          No results found. Please try a different search.
+        </Container>
+      )}
+
+      {showInfo && !showWarning && (
+        <Container className={classes.info}>
+          Search Songs
+        </Container>
+      )}
+
+    </div>)
+
 }
